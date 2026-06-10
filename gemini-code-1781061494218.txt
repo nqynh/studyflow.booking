@@ -1,0 +1,82 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  HOST
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String
+  image         String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  spaces        Space[]   @relation("HostSpaces")
+  bookings      Booking[]
+  reviews       Review[]
+}
+
+model Space {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  address     String
+  city        String
+  pricePerHour Float
+  capacity    Int
+  images      String[]
+  amenities   String[]  // e.g., ["Wifi", "AC", "Quiet", "Coffee"]
+  rating      Float     @default(0.0)
+  isAvailable Boolean   @default(true)
+  hostId      String
+  host        User      @relation("HostSpaces", fields: [hostId], references: [id], onDelete: Cascade)
+  bookings    Booking[]
+  reviews     Review[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @fields([userId], references: [id], onDelete: Cascade)
+  spaceId     String
+  space       Space         @fields([spaceId], references: [id], onDelete: Cascade)
+  date        DateTime
+  startTime   String        // e.g., "09:00"
+  endTime     String        // e.g., "12:00"
+  totalPrice  Float
+  status      BookingStatus @default(PENDING)
+  paymentId   String?       // Stripe Payment Intent ID
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @fields([userId], references: [id], onDelete: Cascade)
+  spaceId   String
+  space     Space    @fields([spaceId], references: [id], onDelete: Cascade)
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+}

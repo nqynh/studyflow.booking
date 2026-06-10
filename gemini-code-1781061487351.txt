@@ -1,0 +1,42 @@
+studyspace-app/
+├── prisma/
+│   ├── schema.prisma
+│   └── seed.ts
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── api/
+│   │   │   ├── spaces/
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/route.ts
+│   │   │   ├── bookings/
+│   │   │   │   └── route.ts
+│   │   │   └── checkout/
+│   │   │       └── route.ts
+│   │   ├── spaces/
+│   │   │   ├── page.tsx
+│   │   │   └── [id]/page.tsx
+│   │   └── dashboard/
+│   │       ├── page.tsx
+│   │       └── host/
+│   │           └── page.tsx
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   └── dialog.tsx
+│   │   ├── shared/
+│   │   │   ├── navbar.tsx
+│   │   │   └── footer.tsx
+│   │   └── spaces/
+│   │       ├── space-card.tsx
+│   │       └── booking-sidebar.tsx
+│   ├── lib/
+│   │   ├── prisma.ts
+│   │   └── utils.ts
+│   └── types/
+│       └── index.ts
+├── .env
+├── package.json
+└── tsconfig.json
